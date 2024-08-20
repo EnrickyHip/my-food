@@ -2,6 +2,37 @@ img {
   max-width: 100%;
 }
 
+:target {
+  scroll-margin-top: 150px;
+}
+
+header {
+  background-color: #E53535;
+  position: sticky;
+  top: 0;
+}
+
+header nav ul {
+  display: flex;
+  list-style: none;
+  gap: 10px;
+  color: white;
+  margin: 0;
+  padding: 0 10px;
+  overflow-x: auto;
+}
+
+header nav a {
+  display: block;
+  padding: 10px;
+  text-decoration: none;
+  color: white;
+}
+
+header nav a:active {
+  background-color: #df5c5c;
+}
+
 /* menu */
 .navbar {
   position: sticky;
@@ -45,12 +76,10 @@ img {
 
 /* cardapio */
 .cardapio-banner {
-  background-color: #E53535;
-  height: 150px;
   display: flex;
   justify-content: center;
   align-items: center;
-  border-bottom-right-radius: 20px;
+  padding: 40px 40px 20px 40px;
 }
 
 .cardapio-banner h3 {

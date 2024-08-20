@@ -1,3 +1,13 @@
+<?php
+
+use App\Lib\DbConnection;
+
+$conn = DbConnection::getConn();
+$smtp = $conn->prepare('SELECT * FROM categoria ORDER BY nome');
+$smtp->execute();
+$categorias = $smtp->fetchAll();
+?>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -10,6 +20,7 @@
   <link rel="stylesheet" href="/public/css/styles.css">
   <title>My food</title>
 </head>
+
 <body>
 
   <?php
@@ -17,9 +28,22 @@
   ?>
 
   <?php if ($page == 'cardapio'): ?>
-    <div class="cardapio-banner">
-      <h3>Cardapio</h3>
-    </div>
+    <header>
+      <div class="cardapio-banner">
+        <h3>Cardapio</h3>
+      </div>
+      <nav>
+        <ul>
+          <?php foreach ($categorias as $categoria): ?>
+            <li>
+              <a href="#categoria_<?= $categoria['id'] ?>">
+                <?= $categoria['nome'] ?>
+              </a>
+            </li>
+          <?php endforeach; ?>
+        </ul>
+      </nav>
+    </header>
   <?php endif; ?>
 
   <div class="container mt-4">
