@@ -20,3 +20,19 @@ INSERT INTO alimento (nome, preco, descricao, foto, categoria_id)
 VALUES ('Arroz', 15.00, 'Arroz branco 5kg', '/public/foto_alimentos/arroz.png', 5);
 INSERT INTO alimento (nome, preco, descricao, foto, categoria_id)
 VALUES ('Feijão', 8.00, 'Feijão preto 1kg', '/public/foto_alimentos/feijao.avif', 5);
+
+INSERT INTO adicional (nome, preco) VALUES ('Granola', 1.50);
+INSERT INTO adicional (nome, preco) VALUES ('Mel', 2.00);
+INSERT INTO adicional (nome, preco) VALUES ('Canela', 0.50);
+INSERT INTO adicional (nome, preco) VALUES ('Iogurte', 3.00);
+INSERT INTO adicional (nome, preco) VALUES ('Aveia', 1.20);
+
+-- Primeiro, obtenha o ID do pedido que contém o alimento "Banana"
+INSERT INTO alimento_pedido (alimento_id, pedido_id) VALUES (2, 1);
+
+-- Agora, insira os adicionais ao alimento
+INSERT INTO alimento_pedido_adicional (alimento_pedido_id, adicional_id) VALUES (1, 1); -- Granola
+INSERT INTO alimento_pedido_adicional (alimento_pedido_id, adicional_id) VALUES (1, 2); -- Mel
+INSERT INTO alimento_pedido_adicional (alimento_pedido_id, adicional_id) VALUES (1, 3); -- Canela
+INSERT INTO alimento_pedido_adicional (alimento_pedido_id, adicional_id) VALUES (1, 4); -- Iogurte
+INSERT INTO alimento_pedido_adicional (alimento_pedido_id, adicional_id) VALUES (1, 5); -- Aveia

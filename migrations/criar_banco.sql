@@ -21,7 +21,10 @@ CREATE TABLE adicional (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(255) NOT NULL,
     preco DECIMAL(10, 2) NOT NULL
+    descricao VARCHAR(255) NOT NULL,
 );
+-- pra mim ver os adicionais do alimento, eu tenho que já ter feito um pedido e pra mim fazer um pedido eu já tenho q ter as info do cliente
+-- então toda vez q ele for entrar em um alimento e ver os adicionais vai ter q ficar colocando o endereço, whatsappp...
 
 CREATE TABLE forma_de_pagamento (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -33,12 +36,11 @@ CREATE TABLE pedido (
     nome VARCHAR(255),
     criado_em DATETIME DEFAULT CURRENT_TIMESTAMP,
     atualizado_em DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    endereco VARCHAR(255),
-    whatsApp VARCHAR(20),
-    forma_pagamento_id INT NOT NULL,
+    endereco VARCHAR(255) NULL,
+    whatsApp VARCHAR(20) NULL,
+    forma_pagamento_id INT NULL,
     FOREIGN KEY (forma_pagamento_id) REFERENCES forma_de_pagamento(id)
  );
-
 CREATE TABLE alimento_pedido (
     id INT AUTO_INCREMENT PRIMARY KEY,
     alimento_id INT,

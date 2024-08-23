@@ -6,6 +6,7 @@ $conn = DbConnection::getConn();
 $query = "SELECT
     categoria.id AS categoria_id,
     categoria.nome AS categoria_nome,
+    alimento.id AS alimento_id,
     alimento.nome AS alimento_nome,
     alimento.descricao,
     alimento.preco,
@@ -47,7 +48,10 @@ foreach ($alimentos as $alimento) {
           </span>
         </div>
         <div class="alimento-cabecalho">
-          <img src="<?= $alimento['foto'] ?>" alt="foto alimento" class="foto-alimento">
+          <a href="?page=adicionais&alimento_id=<?=$alimento['alimento_id']?>">
+
+            <img src="<?= $alimento['foto'] ?>" alt="foto alimento" class="foto-alimento">
+          </a>
         </div>
       </div>
     <?php endforeach; ?>

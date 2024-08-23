@@ -45,6 +45,7 @@ $categorias = $smtp->fetchAll();
       </nav>
     </header>
   <?php endif; ?>
+  
 
   <div class="container mt-4">
     <?php

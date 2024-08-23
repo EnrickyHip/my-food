@@ -1,0 +1,105 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f8f8f8;
+}
+.alimento-container {
+    text-align: center;
+    margin-bottom: 20px;
+}
+.alimento-container img {
+    max-width: 250px;
+    height: auto;
+    display: block;
+    margin: 0 auto 10px;
+}
+.alimento-nome {
+    font-size: 25px;
+    margin-bottom: 5px;
+}
+.alimento-preco {
+    color: #FF4500;
+    margin-left: 30px;
+    font-size: 23px;
+    text-align: left;
+    padding-bottom: 10px; /* Adicionado padding abaixo do preço */
+}
+.adicional-container {
+    background-color: #e0e0e0;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.adicional-info {
+    display: flex;
+    flex-direction: column;
+}
+.adicional-nome {
+    font-size: 20px;
+    font-weight: bold;
+    text-align: left;
+}
+.adicional-preco {
+    color: #FF4500;
+    font-size: 19px;
+    text-align: left;
+    margin-top: 5px;
+    padding-bottom: 10px; /* Adicionado padding abaixo do preço */
+}
+.adicional-descricao {
+    font-size: 15px;
+    margin-left: 10px;
+    text-align: left;
+}
+.adicional-quantidade {
+    display: flex;
+    align-items: center;
+}
+.adicional-quantidade button {
+    background-color: white;
+    color: #ff5555;
+    border: 1px solid #ff5555;
+    border-radius: 3px;
+    padding: 0px 10px;
+    cursor: pointer;
+    font-size: 25px; 
+    width: 40px;
+    height: 40px;
+}
+.adicional-quantidade span {
+    margin: 0 10px;
+    font-size: 18px;
+}
+
+.botao-cardapio {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #FF4500;
+    color: white;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px; 
+    text-decoration: none;
+    font-size: 20px;
+    text-align: center;
+}
+.botao-confirmar {
+    position: fixed;
+    bottom: 110px; 
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #FF4500;
+    color: white;
+    text-align: center;
+    padding: 8px 20px; 
+    text-decoration: none;
+    border-radius: 5px; 
+}
