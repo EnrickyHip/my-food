@@ -9,6 +9,16 @@ $categorias = $smtp->fetchAll();
 
 $page = filter_input(INPUT_GET, 'page', FILTER_SANITIZE_SPECIAL_CHARS);
 
+if ($page === "layout") {
+  header("Location: /?page=cardapio");
+  exit;
+}
+
+if ($page === "admin_layout") {
+  header("Location: /?page=admin_home");
+  exit;
+}
+
 $pageParts = explode("_", $page);
 $admin = count($pageParts) === 2 && $pageParts[0] === "admin";
 
@@ -64,7 +74,11 @@ if ($admin && isset($pageParts[1]) && $pageParts[1] !== "login") {
     <?php
     $filePath = __DIR__ . '/' . $page . '.php';
     if (file_exists($filePath)) {
-      require($filePath);
+      if ($admin) {
+        require(__DIR__ . '/admin_layout.php');
+      } else {
+        require($filePath);
+      }
     } else {
       require('pages/not_found.php');
     }
