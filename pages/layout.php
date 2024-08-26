@@ -2,6 +2,10 @@
 
 use App\Lib\DbConnection;
 
+$protocol = isset($_SERVER['HTTPS']) &&
+$_SERVER['HTTPS'] === 'on' ? 'https://' : 'http://';
+$base_url = $protocol . $_SERVER['HTTP_HOST'] . '/';
+
 $conn = DbConnection::getConn();
 $smtp = $conn->prepare('SELECT * FROM categoria ORDER BY nome');
 $smtp->execute();
@@ -45,8 +49,10 @@ if ($admin && isset($pageParts[1]) && $pageParts[1] !== "login") {
     <link rel="stylesheet" href="/public/css/admin.css">
   <?php else: ?>
     <!-- My css -->
-    <link rel="stylesheet" href="/public/css/styles.css">
-  <?php endif; ?>
+    <link rel="stylesheet" href="<?= $base_url ?>public/css/styles.css">
+    <?php endif; ?>
+  <!-- Bootstrap js -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous" defer></script>
   <title>My food</title>
 </head>
 
@@ -85,13 +91,15 @@ if ($admin && isset($pageParts[1]) && $pageParts[1] !== "login") {
     ?>
   </div>
 
+  <br>
+
   <?php if (!$admin): ?>
     <nav class="navbar">
-      <a href="#" class="active">
+      <a href="?page=inicio" class="active">
         <span class="icon">&#8962;</span>
         Início
       </a>
-      <a href="#">
+      <a href="?page=carrinho">
         <span class="icon">&#128722;</span>
         Carrinho
         <span class="cart-badge">1</span>
@@ -102,9 +110,6 @@ if ($admin && isset($pageParts[1]) && $pageParts[1] !== "login") {
       </a>
     </nav>
   <?php endif; ?>
-
-  <!-- Bootstrap js -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
 </body>
 

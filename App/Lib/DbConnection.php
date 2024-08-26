@@ -6,7 +6,7 @@ class DbConnection
 {
   private static $conn;
 
-  public static function getConn()
+  public static function getConn(): \PDO
   {
     if (is_null(self::$conn)) {
       try {

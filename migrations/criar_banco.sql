@@ -3,70 +3,69 @@ CREATE DATABASE IF NOT EXISTS my_food;
 USE my_food;
 
 CREATE TABLE categoria (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(255) NOT NULL
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nome VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE alimento (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(255) NOT NULL,
-    preco DECIMAL(10, 2) NOT NULL,
-    descricao TEXT,
-    foto VARCHAR(255),
-    categoria_id INT NOT NULL,
-    FOREIGN KEY (categoria_id) REFERENCES categoria(id)
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nome VARCHAR(255) NOT NULL,
+  preco DECIMAL(10, 2) NOT NULL,
+  descricao TEXT,
+  foto VARCHAR(255),
+  categoria_id INT NOT NULL,
+  FOREIGN KEY (categoria_id) REFERENCES categoria(id)
 );
 
 CREATE TABLE adicional (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(255) NOT NULL,
-    preco DECIMAL(10, 2) NOT NULL
-    descricao VARCHAR(255) NOT NULL,
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nome VARCHAR(255) NOT NULL,
+  preco DECIMAL(10, 2) NOT NULL,
+  descricao VARCHAR(255) NOT NULL
 );
--- pra mim ver os adicionais do alimento, eu tenho que já ter feito um pedido e pra mim fazer um pedido eu já tenho q ter as info do cliente
--- então toda vez q ele for entrar em um alimento e ver os adicionais vai ter q ficar colocando o endereço, whatsappp...
 
 CREATE TABLE forma_de_pagamento (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(255) NOT NULL
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nome VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE pedido (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(255),
-    criado_em DATETIME DEFAULT CURRENT_TIMESTAMP,
-    atualizado_em DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    endereco VARCHAR(255) NULL,
-    whatsApp VARCHAR(20) NULL,
-    forma_pagamento_id INT NULL,
-    FOREIGN KEY (forma_pagamento_id) REFERENCES forma_de_pagamento(id)
- );
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nome VARCHAR(255) NOT NULL,
+  criado_em DATETIME DEFAULT CURRENT_TIMESTAMP,
+  atualizado_em DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  endereco VARCHAR(255) NOT NULL,
+  whatsApp VARCHAR(20) NOT NULL,
+  forma_pagamento_id INT NOT NULL,
+  FOREIGN KEY (forma_pagamento_id) REFERENCES forma_de_pagamento(id)
+);
+
 CREATE TABLE alimento_pedido (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    alimento_id INT,
-    pedido_id INT,
-    FOREIGN KEY (alimento_id) REFERENCES alimento(id),
-    FOREIGN KEY (pedido_id) REFERENCES pedido(id)
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  alimento_id INT NOT NULL,
+  pedido_id INT NOT NULL,
+  FOREIGN KEY (alimento_id) REFERENCES alimento(id),
+  FOREIGN KEY (pedido_id) REFERENCES pedido(id)
 );
 
 CREATE TABLE alimento_pedido_adicional (
-    alimento_pedido_id INT,
-    adicional_id INT,
-    PRIMARY KEY (alimento_pedido_id, adicional_id),
-    FOREIGN KEY (alimento_pedido_id) REFERENCES alimento_pedido(id),
-    FOREIGN KEY (adicional_id) REFERENCES adicional(id)
+  alimento_pedido_id INT NOT NULL,
+  adicional_id INT NOT NULL,
+  PRIMARY KEY (alimento_pedido_id, adicional_id),
+  FOREIGN KEY (alimento_pedido_id) REFERENCES alimento_pedido(id),
+  FOREIGN KEY (adicional_id) REFERENCES adicional(id)
 );
 
 CREATE TABLE status_pedido (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(255) NOT NULL
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nome VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE pedido_status (
-    pedido_id INT,
-    status_pedido_id INT,
-    data_status DATETIME NOT NULL,
-    PRIMARY KEY (pedido_id, status_pedido_id),
-    FOREIGN KEY (pedido_id) REFERENCES pedido(id),
-    FOREIGN KEY (status_pedido_id) REFERENCES status_pedido(id)
+  pedido_id INT,
+  status_pedido_id INT,
+  data_status DATETIME NOT NULL,
+  PRIMARY KEY (pedido_id, status_pedido_id),
+  FOREIGN KEY (pedido_id) REFERENCES pedido(id),
+  FOREIGN KEY (status_pedido_id) REFERENCES status_pedido(id)
 );

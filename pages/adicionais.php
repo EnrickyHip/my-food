@@ -1,84 +1,85 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pedido de Alimento</title>
-    <link rel="stylesheet" href="public/css/test.css">
-    <script src="public/js/adicionais.js" defer></script>
-</head>
-<body>
+<a href="?page=inicio" class="botao-cardapio" title="Fechar">X</a>
 
-    <a href="?page=cardapio" class="botao-cardapio" title="Fechar">X</a>
+<div class="alimento-container">
+<?php
+use App\Lib\DbConnection;
 
-    <?php
-    use App\Lib\DbConnection;
+$conn = DbConnection::getConn();
 
-    $conn = DbConnection::getConn();
+$alimentoId = filter_input(INPUT_GET, 'alimento_id', FILTER_VALIDATE_INT);
 
-    $query = "INSERT INTO pedido (nome, endereco, whatsApp, forma_pagamento_id) VALUES (NULL, NULL, NULL, NULL)";
-    $stmt = $conn->prepare($query);
-    $stmt->execute();
+if (!$alimentoId) {
+  exit;
+}
 
-    $pedidoId = $conn->lastInsertId();
+$alimentoQuery = 'SELECT * FROM alimento WHERE id = ?';
+$stmt = $conn->prepare($alimentoQuery);
+$stmt->bindParam(1, $alimentoId);
+$stmt->execute();
+$alimento = $stmt->fetch();
+if ($alimento) { ?>
+  <img src='<?= $alimento['foto'] ?>' alt='Imagem do alimento'>
+  <div class='alimento-nome'>
+    <?= $alimento['nome'] ?>
+  </div>
+  <div class='alimento-preco text-center' style="margin: 0;"
+  data-preco="<?= $alimento['preco'] ?>">
+    R$ <?= $alimento['preco'] ?>
+  </div>
+<?php }
 
-    $alimentoId = $_GET['alimento_id'] ?? null;
+$categoriasQuery = 'SELECT
+  ad.nome AS adicional_nome,
+  ad.preco AS adicional_preco,
+  ad.descricao AS adicional_descricao,
+  ad.id AS adicional_id,
+  a.foto AS alimento_foto
+FROM alimento a
+INNER JOIN categoria c
+ON a.categoria_id = c.id
+INNER JOIN adicional_categoria ac
+ON ac.categoria_id = c.id
+INNER JOIN adicional ad
+ON ac.adicional_id = ad.id
+WHERE a.id = :alimento_id';
 
-    if ($alimentoId) {
-        $query = "INSERT INTO alimento_pedido (alimento_id, pedido_id) VALUES (:alimento_id, :pedido_id)";
-        $stmt = $conn->prepare($query);
-        $stmt->bindParam(':alimento_id', $alimentoId, PDO::PARAM_INT);
-        $stmt->bindParam(':pedido_id', $pedidoId, PDO::PARAM_INT);
-        $stmt->execute();
+$stmt = $conn->prepare($categoriasQuery);
+$stmt->bindParam(':alimento_id', $alimentoId);
+$stmt->execute();
+$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        $query = "SELECT alimento.id AS alimento_id, alimento.nome AS alimento_nome, alimento.preco AS alimento_preco, alimento.foto AS alimento_foto,
-                         adicional.id AS adicional_id, adicional.nome AS adicional_nome, adicional.preco AS adicional_preco, adicional.descricao AS adicional_descricao
-                  FROM alimento
-                  JOIN alimento_pedido ON alimento.id = alimento_pedido.alimento_id
-                  LEFT JOIN alimento_pedido_adicional ON alimento_pedido.id = alimento_pedido_adicional.alimento_pedido_id
-                  LEFT JOIN adicional ON alimento_pedido_adicional.adicional_id = adicional.id
-                  WHERE alimento_pedido.alimento_id = :alimento_id";
+if ($result && $alimento = $result[0]) { ?>
+  <!-- adicionais -->
+  <?php foreach ($result as $adicional): ?>
+    <div class='adicional-container' data-adicional-id="<?= $adicional['adicional_id'] ?>"
+    data-adicional-nome="<?= $adicional['adicional_nome'] ?>">
+      <div class='adicional-info'>
+        <div class='adicional-nome'>
+          <?= $adicional['adicional_nome'] ?>
+        </div>
+        <div class="adicional-preco" data-preco="<?= $adicional['adicional_preco'] ?>">
+          <?= $adicional['adicional_preco'] ?>
+        </div>
+        <div class="adicional-descricao">
+          <?= $adicional['adicional_descricao'] ?>
+        </div>
+      </div>
+      <div class='adicional-quantidade'>
+        <button class="toogle-adicional" data-value="0">
+          Sim
+        </button>
+      </div>
+    </div>
+  <?php endforeach; ?>
+<?php }
+?>
+</div>
 
-        $stmt = $conn->prepare($query);
-        $stmt->bindParam(':alimento_id', $alimentoId, PDO::PARAM_INT);
-        $stmt->execute();
+<div class="d-flex justify-content-center" style="max-width: 250px; margin: auto;">
+  <a href="#" class="botao-confirmar" data-alimentoId="<?= $alimentoId ?>"
+  id="botaoConfirmar">
+    Confirmar
+  </a>
+</div>
 
-        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        if ($result) {
-            $alimento = [
-                'id' => $result[0]['alimento_id'],
-                'nome' => $result[0]['alimento_nome'],
-                'preco' => $result[0]['alimento_preco'],
-                'foto' => $result[0]['alimento_foto']
-            ];
-            echo "<div class='alimento-container'>";
-            if ($alimento['foto']) {
-                echo "<img src='" . htmlspecialchars($alimento['foto']) . "' alt='Imagem do alimento' />";
-            }
-            echo "<div class='alimento-nome'>" . htmlspecialchars($alimento['nome']) . "</div>";
-            echo "<div class='alimento-preco' data-preco='" . htmlspecialchars($alimento['preco']) . "'>R$ " . htmlspecialchars($alimento['preco']) . "</div>";
-            echo "</div>";
-
-            foreach ($result as $row) {
-                if ($row['adicional_id']) {
-                    echo "<div class='adicional-container' data-adicional-id='" . htmlspecialchars($row['adicional_id']) . "'>";
-                    echo "<div class='adicional-info'>";
-                    echo "<div class='adicional-nome'>" . htmlspecialchars($row['adicional_nome']) . "</div>";
-                    echo "<div class='adicional-preco' data-preco='" . htmlspecialchars($row['adicional_preco']) . "'>R$ " . htmlspecialchars($row['adicional_preco']) . "</div>";
-                    echo "<div class='adicional-descricao'>" . htmlspecialchars($row['adicional_descricao']) . "</div>";
-                    echo "</div>";
-                    echo "<div class='adicional-quantidade'>";
-                    echo "<button class='menos-button'>-</button>";
-                    echo "<span class='quantidade'>0</span>";
-                    echo "<button class='mais-button'>+</button>";
-                    echo "</div>";
-                    echo "</div>";
-                }
-            }
-        }
-    }
-    ?>
-    <a href="#" class="botao-confirmar">Confirmar</a>
-</body>
-</html>
+<script src="<?= $base_url ?>/public/js/adicionais.js"></script>
