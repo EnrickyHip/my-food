@@ -27,12 +27,12 @@ INSERT INTO adicional (nome, preco) VALUES ('Canela', 0.50);
 INSERT INTO adicional (nome, preco) VALUES ('Iogurte', 3.00);
 INSERT INTO adicional (nome, preco) VALUES ('Aveia', 1.20);
 
--- Primeiro, obtenha o ID do pedido que contém o alimento "Banana"
-INSERT INTO alimento_pedido (alimento_id, pedido_id) VALUES (2, 1);
+INSERT INTO adicional_categoria(adicional_id,categoria_id) VALUES (2, 1);
+INSERT INTO adicional_categoria(adicional_id,categoria_id) VALUES (3, 1);
+INSERT INTO adicional_categoria(adicional_id,categoria_id) VALUES (4, 1);
+INSERT INTO adicional_categoria(adicional_id,categoria_id) VALUES (6, 4);
+INSERT INTO adicional_categoria(adicional_id,categoria_id) VALUES (2, 4);
 
--- Agora, insira os adicionais ao alimento
-INSERT INTO alimento_pedido_adicional (alimento_pedido_id, adicional_id) VALUES (1, 1); -- Granola
-INSERT INTO alimento_pedido_adicional (alimento_pedido_id, adicional_id) VALUES (1, 2); -- Mel
-INSERT INTO alimento_pedido_adicional (alimento_pedido_id, adicional_id) VALUES (1, 3); -- Canela
-INSERT INTO alimento_pedido_adicional (alimento_pedido_id, adicional_id) VALUES (1, 4); -- Iogurte
-INSERT INTO alimento_pedido_adicional (alimento_pedido_id, adicional_id) VALUES (1, 5); -- Aveia
+INSERT INTO forma_de_pagamento (nome) VALUES('pix');
+INSERT INTO forma_de_pagamento (nome) VALUES('dinheiro');
+INSERT INTO forma_de_pagamento (nome) VALUES('cartão');

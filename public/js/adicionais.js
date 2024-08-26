@@ -1,46 +1,69 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const adicionais = document.querySelectorAll('.adicional-container');
-    let precoTotal = parseFloat(document.querySelector('.alimento-preco').dataset.preco);
-    const adicionaisQuantidades = {};
+  const adicionais = document.querySelectorAll('.adicional-container');
+  let precoTotal = parseFloat(document.querySelector('.alimento-preco').dataset.preco);
+  let adicionaisLista = [];
 
-    adicionais.forEach(adicional => {
-        const adicionalId = adicional.dataset.adicionalId;
-        const menosButton = adicional.querySelector('.menos-button');
-        const maisButton = adicional.querySelector('.mais-button');
-        const quantidadeSpan = adicional.querySelector('.quantidade');
-        const precoElemento = adicional.querySelector('.adicional-preco');
-        
-        let quantidade = 0;
-        const precoAdicional = parseFloat(precoElemento.dataset.preco);
+  adicionais.forEach(adicional => {
+    const adicionalId = adicional.dataset.adicionalId;
+    const adicionalNome = adicional.dataset.adicionalNome;
+    const toogleAdicional = adicional.querySelector('.toogle-adicional');
+    const precoElemento = adicional.querySelector('.adicional-preco');
 
-        const atualizarPrecoTotal = (diferenca) => {
-            precoTotal += diferenca;
-            document.querySelector('.alimento-preco').textContent = `R$ ${precoTotal.toFixed(2)}`;
-        };
+    const precoAdicional = parseFloat(precoElemento.dataset.preco);
 
-        const atualizarObjetoAdicionais = () => {
-            console.log('Atualizando objeto adicionais: ', adicionaisQuantidades);
-            if (quantidade > 0) {
-                adicionaisQuantidades[adicionalId] = quantidade;
-            } else {
-                delete adicionaisQuantidades[adicionalId];
-            }
-        };
+    const somaPrecoTotal = (valor) => {
+      precoTotal += valor;
+      document.querySelector('.alimento-preco').textContent = `R$ ${precoTotal.toFixed(2)}`;
+    };
 
-        menosButton.addEventListener('click', () => {
-            if (quantidade > 0) {
-                quantidade--;
-                quantidadeSpan.textContent = quantidade;
-                atualizarPrecoTotal(-precoAdicional);
-                atualizarObjetoAdicionais();
-            }
-        });
+    const subtraiPrecoTotal = (valor) => {
+      precoTotal -= valor;
+      document.querySelector('.alimento-preco').textContent = `R$ ${precoTotal.toFixed(2)}`;
+    }
 
-        maisButton.addEventListener('click', () => {
-            quantidade++;
-            quantidadeSpan.textContent = quantidade;
-            atualizarPrecoTotal(precoAdicional);
-            atualizarObjetoAdicionais();
-        });
-    });
+    const atualizarObjetoAdicionais = (e) => {
+      const btn = e.target;
+      const statusValue = btn.dataset.value;
+      if (statusValue == '0') {
+        btn.innerHTML = 'Não';
+        btn.dataset.value = '1';
+        adicionaisLista.push(adicionalId);
+        somaPrecoTotal(precoAdicional);
+      } else {
+        btn.innerHTML = 'Sim';
+        btn.dataset.value = '0';
+        adicionaisLista = adicionaisLista.filter((valor) => valor != adicionalId);
+        subtraiPrecoTotal(precoAdicional);
+      }
+    };
+
+    toogleAdicional.addEventListener('click', atualizarObjetoAdicionais);
+  });
+
+  document.getElementById('botaoConfirmar').addEventListener('click', (e) => {
+    e.preventDefault();
+
+    const btn = e.target;
+    const alimentoId = btn.dataset.alimentoid;
+
+    if (localStorage.getItem('pedido')) {
+      const pedido = JSON.parse(localStorage.getItem('pedido'));
+      pedido.push({
+        alimentoId,
+        adicionais: adicionaisLista
+      });
+      localStorage.setItem('pedido', JSON.stringify(pedido));
+    } else {
+      localStorage.setItem('pedido', JSON.stringify(
+        [
+          {
+            alimentoId,
+            adicionais: adicionaisLista
+          }
+        ]
+      ));
+    }
+
+    window.location.href = '/?page=carrinho';
+  });
 });
