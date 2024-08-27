@@ -35,25 +35,25 @@ foreach ($alimentos as $alimento) {
   </h5>
   <div class="categoria-alimentos">
     <?php foreach ($categoria['alimentos'] as $alimento): ?>
-      <div class="alimento mb-3">
-        <div class="alimento-corpo">
-          <h6 class="m-0">
-            <?= $alimento['alimento_nome'] ?>
-          </h6>
-          <p class="m-0">
-            <?= $alimento['descricao'] ?>
-          </p>
-          <span class="preco-alimento text-danger">
-            <?= $alimento['preco'] ?>
-          </span>
-        </div>
-        <div class="alimento-cabecalho">
-          <a href="?page=adicionais&alimento_id=<?=$alimento['alimento_id']?>">
+      <a href="?page=adicionais&alimento_id=<?= $alimento['alimento_id'] ?>">
+        <div class="alimento mb-3">
+          <div class="alimento-corpo">
+            <h6 class="m-0">
+              <?= $alimento['alimento_nome'] ?>
+            </h6>
+            <p class="m-0">
+              <?= $alimento['descricao'] ?>
+            </p>
+            <span class="preco-alimento text-danger">
+              <?= $alimento['preco'] ?>
+            </span>
+          </div>
+          <div class="alimento-cabecalho">
 
             <img src="<?= $alimento['foto'] ?>" alt="foto alimento" class="foto-alimento">
-          </a>
+          </div>
         </div>
-      </div>
+      </a>
     <?php endforeach; ?>
   </div>
 <?php endforeach; ?>

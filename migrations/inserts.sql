@@ -30,7 +30,6 @@ INSERT INTO adicional (nome, preco) VALUES ('Aveia', 1.20);
 INSERT INTO adicional_categoria(adicional_id,categoria_id) VALUES (2, 1);
 INSERT INTO adicional_categoria(adicional_id,categoria_id) VALUES (3, 1);
 INSERT INTO adicional_categoria(adicional_id,categoria_id) VALUES (4, 1);
-INSERT INTO adicional_categoria(adicional_id,categoria_id) VALUES (6, 4);
 INSERT INTO adicional_categoria(adicional_id,categoria_id) VALUES (2, 4);
 
 INSERT INTO forma_de_pagamento (nome) VALUES('pix');

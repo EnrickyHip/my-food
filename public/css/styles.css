@@ -2,6 +2,18 @@ img {
   max-width: 100%;
 }
 
+.categoria-alimentos a {
+  text-decoration: none;
+  color: black;
+}
+
+.categoria-alimentos a:active .alimento {
+  text-decoration: none;
+  background-color: rgb(232, 232, 232);
+  color: black;
+}
+
+
 :target {
   scroll-margin-top: 150px;
 }
@@ -33,9 +45,18 @@ header nav a:active {
   background-color: #df5c5c;
 }
 
+.main-container {
+  margin-bottom: 85px;
+}
+
+.toogle-adicional[data-value="1"] {
+  background-color: #ff5555;
+  color: white;
+}
+
 /* menu */
 .navbar {
-  position: sticky;
+  position: fixed;
   bottom: 0;
   width: 100%;
   background-color: #e0e0e0;
@@ -80,6 +101,7 @@ header nav a:active {
   justify-content: center;
   align-items: center;
   padding: 40px 40px 20px 40px;
+  z-index: 20;
 }
 
 .cardapio-banner h3 {
@@ -104,6 +126,7 @@ header nav a:active {
 .alimento-container {
   text-align: center;
   margin-bottom: 20px;
+  margin-top: 80px;
 }
 
 .alimento-container img {
@@ -183,9 +206,9 @@ header nav a:active {
 }
 
 .botao-cardapio {
-  position: absolute;
-  top: 10px;
-  right: 10px;
+  position: fixed;
+  right: 20px;
+  top: 110px;
   background-color: #FF4500;
   color: white;
   width: 40px;

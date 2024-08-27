@@ -56,13 +56,13 @@ if ($_POST['pedido']) {
     $alimentoPedidoId = $conn->lastInsertId();
 
     // Adicionais
-    foreach ($adicionais as $adicionalId) {
+    foreach ($adicionais as $adicional) {
       $queryAdicional = "INSERT INTO alimento_pedido_adicional (alimento_pedido_id,
       adicional_id) VALUES (?, ?)";
 
       $stmt = $conn->prepare($queryAdicional);
       $stmt->bindParam(1, $alimentoPedidoId);
-      $stmt->bindParam(2, $adicionalId);
+      $stmt->bindParam(2, $adicional["adicionalId"]);
       $stmt->execute();
     }
   }

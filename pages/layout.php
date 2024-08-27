@@ -3,7 +3,7 @@
 use App\Lib\DbConnection;
 
 $protocol = isset($_SERVER['HTTPS']) &&
-$_SERVER['HTTPS'] === 'on' ? 'https://' : 'http://';
+  $_SERVER['HTTPS'] === 'on' ? 'https://' : 'http://';
 $base_url = $protocol . $_SERVER['HTTP_HOST'] . '/';
 
 $conn = DbConnection::getConn();
@@ -32,6 +32,13 @@ if ($admin && isset($pageParts[1]) && $pageParts[1] !== "login") {
     exit;
   }
 }
+
+$headerTitle = match ($page) {
+  "inicio" => "Cardápio",
+  "adicionais" => "Adicionais",
+  default => "My Food",
+};
+
 ?>
 
 <!DOCTYPE html>
@@ -50,33 +57,35 @@ if ($admin && isset($pageParts[1]) && $pageParts[1] !== "login") {
   <?php else: ?>
     <!-- My css -->
     <link rel="stylesheet" href="<?= $base_url ?>public/css/styles.css">
-    <?php endif; ?>
+  <?php endif; ?>
   <!-- Bootstrap js -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous" defer></script>
   <title>My food</title>
 </head>
 
 <body>
-  <?php if ($page == 'cardapio'): ?>
+  <?php if (!$admin): ?>
     <header>
       <div class="cardapio-banner">
-        <h3>Cardápio</h3>
+        <h3><?= $headerTitle ?></h3>
       </div>
       <nav>
         <ul>
-          <?php foreach ($categorias as $categoria): ?>
-            <li>
-              <a href="#categoria_<?= $categoria['id'] ?>">
-                <?= $categoria['nome'] ?>
-              </a>
-            </li>
-          <?php endforeach; ?>
+          <?php if ($page === "inicio"): ?>
+            <?php foreach ($categorias as $categoria): ?>
+              <li>
+                <a href="#categoria_<?= $categoria['id'] ?>">
+                  <?= $categoria['nome'] ?>
+                </a>
+              </li>
+            <?php endforeach; ?>
+          <?php endif; ?>
         </ul>
       </nav>
     </header>
   <?php endif; ?>
 
-  <div class="container mt-4">
+  <div class="main-container container mt-4">
     <?php
     $filePath = __DIR__ . '/' . $page . '.php';
     if (file_exists($filePath)) {

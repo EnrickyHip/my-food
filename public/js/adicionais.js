@@ -25,12 +25,12 @@ document.addEventListener('DOMContentLoaded', () => {
       const btn = e.target;
       const statusValue = btn.dataset.value;
       if (statusValue == '0') {
-        btn.innerHTML = 'Não';
+        btn.innerHTML = 'Sim';
         btn.dataset.value = '1';
-        adicionaisLista.push(adicionalId);
+        adicionaisLista.push({ adicionalId, adicionalNome, preco: precoAdicional });
         somaPrecoTotal(precoAdicional);
       } else {
-        btn.innerHTML = 'Sim';
+        btn.innerHTML = 'Não';
         btn.dataset.value = '0';
         adicionaisLista = adicionaisLista.filter((valor) => valor != adicionalId);
         subtraiPrecoTotal(precoAdicional);
@@ -45,11 +45,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const btn = e.target;
     const alimentoId = btn.dataset.alimentoid;
+    const alimentoNome = btn.dataset.alimentonome;
 
     if (localStorage.getItem('pedido')) {
       const pedido = JSON.parse(localStorage.getItem('pedido'));
       pedido.push({
+        preco: parseFloat(document.querySelector('.alimento-preco').dataset.preco),
         alimentoId,
+        alimentoNome,
         adicionais: adicionaisLista
       });
       localStorage.setItem('pedido', JSON.stringify(pedido));
@@ -57,6 +60,8 @@ document.addEventListener('DOMContentLoaded', () => {
       localStorage.setItem('pedido', JSON.stringify(
         [
           {
+            preco: parseFloat(document.querySelector('.alimento-preco').dataset.preco),
+            alimentoNome,
             alimentoId,
             adicionais: adicionaisLista
           }
