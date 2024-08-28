@@ -87,9 +87,23 @@ $headerTitle = match ($page) {
     <?php
     $msg = filter_input(INPUT_GET, 'msg', FILTER_VALIDATE_INT);
     ?>
-    <?php if ($msg && $msg == 1): ?>
-      <div class="alert alert-success">Seu pedido foi finalizado</div>
-    <?php endif; ?>
+    <?php
+    if ($msg) {
+      if ($msg == 1) { ?>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+          Seu pedido foi finalizado
+          <button type="button" class="btn-close" data-bs-dismiss="alert"
+          aria-label="Close"></button>
+        </div>
+      <?php } else if ($msg == 2) { ?>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+          Pedido finalizado com sucesso
+          <button type="button" class="btn-close" data-bs-dismiss="alert"
+          aria-label="Close"></button>
+        </div>
+      <?php }
+    }
+    ?>
     <?php
     $filePath = __DIR__ . '/' . $page . '.php';
     if (file_exists($filePath)) {
