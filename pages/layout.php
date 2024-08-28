@@ -111,11 +111,6 @@ $headerTitle = match ($page) {
       <a href="?page=carrinho">
         <span class="icon">&#128722;</span>
         Carrinho
-        <span class="cart-badge">1</span>
-      </a>
-      <a href="#">
-        <span class="icon">&#128278;</span>
-        Histórico
       </a>
     </nav>
   <?php endif; ?>
