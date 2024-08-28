@@ -3,6 +3,7 @@
 session_start();
 
 require(__DIR__ . '/../../vendor/autoload.php');
+require(__DIR__ . '/../base_url.php');
 
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../../');
 $dotenv->load();
@@ -37,10 +38,12 @@ if ($_POST['pedido']) {
     $alimentoId = $pedido['alimentoId'];
     $adicionais = $pedido['adicionais'];
     if (!filter_var($alimentoId, FILTER_VALIDATE_INT)) {
+      header('Location:' . $base_url . '?page=inicio&msg=2');
       exit;
     }
     if ($adicionais && count($adicionais) > 0) {
       if (!filter_var_array($adicionais, FILTER_VALIDATE_INT)) {
+        header('Location:' . $base_url . '?page=inicio&msg=2');
         exit;
       }
     }
@@ -66,4 +69,6 @@ if ($_POST['pedido']) {
       $stmt->execute();
     }
   }
+
+  header('Location:' . $base_url . '?page=inicio&msg=1');
 }

@@ -2,9 +2,7 @@
 
 use App\Lib\DbConnection;
 
-$protocol = isset($_SERVER['HTTPS']) &&
-  $_SERVER['HTTPS'] === 'on' ? 'https://' : 'http://';
-$base_url = $protocol . $_SERVER['HTTP_HOST'] . '/';
+require(__DIR__ . '/base_url.php');
 
 $conn = DbConnection::getConn();
 $smtp = $conn->prepare('SELECT * FROM categoria ORDER BY nome');
@@ -86,6 +84,12 @@ $headerTitle = match ($page) {
   <?php endif; ?>
 
   <div class="main-container container mt-4">
+    <?php
+    $msg = filter_input(INPUT_GET, 'msg', FILTER_VALIDATE_INT);
+    ?>
+    <?php if ($msg && $msg == 1): ?>
+      <div class="alert alert-success">Seu pedido foi finalizado</div>
+    <?php endif; ?>
     <?php
     $filePath = __DIR__ . '/' . $page . '.php';
     if (file_exists($filePath)) {
