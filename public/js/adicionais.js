@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
       } else {
         btn.innerHTML = 'Não';
         btn.dataset.value = '0';
-        adicionaisLista = adicionaisLista.filter((valor) => valor != adicionalId);
+        adicionaisLista = adicionaisLista.filter((valor) => valor.adicionalId != adicionalId);
         subtraiPrecoTotal(precoAdicional);
       }
     };

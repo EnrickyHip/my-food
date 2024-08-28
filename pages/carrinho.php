@@ -151,7 +151,7 @@
       const ul = document.createElement('ul');
       let precoTotal = 0;
 
-      pedidoList.forEach(item => {
+      pedidoList.forEach((item, index) => {
         const li = document.createElement('li');
         // Gera a lista de adicionais com preço
         const adicionaisList = item.adicionais.length > 0 ?
@@ -169,7 +169,7 @@
         <div><strong>Preço:</strong> R$ ${precoItem.toFixed(2)}</div>
         <div><strong>Adicionais:</strong></div>
         <ul>${adicionaisList}</ul>
-        <button class="btn btn-danger btn-sm mt-2" data-item-id="${item.alimentoId}">Remover</button>
+        <button class="btn btn-danger btn-sm mt-2" data-item-index="${index}">Remover</button>
         <hr>
       `;
         ul.appendChild(li);
@@ -187,16 +187,19 @@
   // Adiciona o evento de clique para os botões de remoção
   document.getElementById('staticBackdrop').addEventListener('click', (event) => {
     if (event.target.classList.contains('btn-danger')) {
-      const itemId = event.target.dataset.itemId;
-      removeItemFromPedido(itemId);
+      const itemIndex = event.target.dataset.itemIndex;
+      removeItemFromPedido(itemIndex);
     }
   });
 
-  function removeItemFromPedido(itemId) {
+  function removeItemFromPedido(itemIndex) {
     let pedido = JSON.parse(localStorage.getItem('pedido'));
     if (pedido) {
       // Filtra o pedido removendo o item com o id correspondente
-      pedido = pedido.filter(item => item.alimentoId !== itemId);
+      // console.log(pedido);
+      pedido = pedido.filter((item, index) => Number(itemIndex) !== index);
+      // console.log(pedido);
+
       if (pedido.length === 0) {
         localStorage.removeItem('pedido');
       } else {
